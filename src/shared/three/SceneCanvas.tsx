@@ -10,7 +10,7 @@ interface SceneCanvasProps {
 // 모든 역설 씬이 공유하는 기본 캔버스
 export const SceneCanvas = ({ children, orbitControls = false }: SceneCanvasProps) => (
   <Canvas
-    camera={{ position: [0, 0, 8], fov: 60 }}
+    camera={{ position: [0, 2, 10], fov: 60 }}
     style={{ background: '#050510' }}
     shadows
   >
