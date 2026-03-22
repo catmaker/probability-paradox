@@ -1,0 +1,494 @@
+.monty-intro {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 52%, rgba(191, 112, 42, 0.18), transparent 18%),
+    radial-gradient(circle at 10% 84%, rgba(167, 96, 43, 0.12), transparent 18%),
+    linear-gradient(180deg, #050607 0%, #0a0c10 48%, #07080b 100%);
+  color: #f3e5cf;
+}
+
+.monty-intro__noise,
+.monty-intro__grid,
+.monty-intro__glow,
+.monty-intro__orbit,
+.monty-intro__dot {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.monty-intro__noise {
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+.monty-intro__grid {
+  opacity: 0.2;
+  background:
+    linear-gradient(transparent 97%, rgba(255, 255, 255, 0.04) 100%),
+    linear-gradient(90deg, transparent 97%, rgba(255, 255, 255, 0.03) 100%);
+  background-size: 100% 168px, 168px 100%;
+  mask-image: radial-gradient(circle at center, black 28%, transparent 92%);
+}
+
+.monty-intro__glow--left {
+  background: radial-gradient(circle at 2% 50%, rgba(205, 117, 46, 0.22), transparent 24%);
+}
+
+.monty-intro__glow--right {
+  background: radial-gradient(circle at 98% 44%, rgba(205, 117, 46, 0.18), transparent 20%);
+}
+
+.monty-intro__orbit {
+  border-radius: 999px;
+  border: 1px solid rgba(200, 170, 124, 0.1);
+}
+
+.monty-intro__orbit--one {
+  inset: 6% 56% -28% -20%;
+}
+
+.monty-intro__orbit--two {
+  inset: -12% -10% 12% 68%;
+}
+
+.monty-intro__dot::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #b86d32;
+  box-shadow: 0 0 0 2px rgba(248, 225, 192, 0.95), 0 0 18px rgba(184, 109, 50, 0.55);
+}
+
+.monty-intro__dot--left::before {
+  left: 9.5%;
+  top: 46%;
+}
+
+.monty-intro__dot--right::before {
+  right: 12.5%;
+  top: 18%;
+  opacity: 0.36;
+}
+
+.monty-intro__shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  padding: 22px 28px 14px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.monty-intro__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.monty-intro__brand {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.monty-intro__brand-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.monty-intro__brand-mark {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monty-intro__brand-mark-ring,
+.monty-intro__brand-mark-slit {
+  position: absolute;
+  display: block;
+}
+
+.monty-intro__brand-mark-ring {
+  inset: 2px;
+  border-radius: 50%;
+  border: 1px solid rgba(236, 223, 203, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(187, 126, 69, 0.16);
+}
+
+.monty-intro__brand-mark-slit {
+  width: 18px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(199, 124, 64, 0.78);
+  transform: rotate(28deg);
+  box-shadow: 0 0 22px rgba(199, 124, 64, 0.24);
+}
+
+.monty-intro__logo {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.15rem, 2.9vw, 3.1rem);
+  line-height: 0.94;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: #f8eee0;
+}
+
+.monty-intro__logo-sub {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.48em;
+  color: rgba(226, 209, 184, 0.76);
+}
+
+.monty-intro__main {
+  min-height: 0;
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.monty-intro__feature {
+  width: min(100%, 1560px);
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.monty-intro__hero {
+  display: grid;
+  grid-template-columns: minmax(540px, 1.02fr) minmax(420px, 0.98fr);
+  align-items: stretch;
+  gap: 42px;
+  height: min(64vh, 680px);
+}
+
+.monty-intro__hero-copy {
+  padding: 28px 4px 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.monty-intro__eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(205, 180, 142, 0.7);
+}
+
+.monty-intro__title {
+  margin-top: 20px;
+  width: 100%;
+  font-size: clamp(2.4rem, 3.2vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  color: #f4e9d9;
+}
+
+.monty-intro__statement {
+  margin-top: 22px;
+  width: 100%;
+  font-size: clamp(1.05rem, 1.35vw, 1.5rem);
+  line-height: 1.55;
+  color: rgba(239, 229, 212, 0.86);
+}
+
+.monty-intro__english {
+  margin-top: 16px;
+  width: 100%;
+  font-size: clamp(1.05rem, 1.28vw, 1.42rem);
+  line-height: 1.14;
+  color: rgba(191, 160, 121, 0.72);
+}
+
+.monty-intro__description {
+  margin-top: 28px;
+  width: 100%;
+  font-size: 0.88rem;
+  line-height: 1.82;
+  color: rgba(236, 224, 205, 0.76);
+}
+
+.monty-intro__description p + p {
+  margin-top: 10px;
+}
+
+.monty-intro__stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.monty-intro__stats span {
+  padding: 10px 14px;
+  border: 1px solid rgba(183, 131, 80, 0.25);
+  background: rgba(36, 25, 18, 0.4);
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  color: #cf8648;
+}
+
+.monty-intro__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.monty-intro__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  min-width: 208px;
+  padding: 13px 18px 13px 24px;
+  border: 1px solid rgba(195, 120, 61, 0.72);
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.monty-intro__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(195, 120, 61, 0.16);
+}
+
+.monty-intro__cta--primary {
+  background: rgba(179, 111, 49, 0.05);
+  color: #d78647;
+}
+
+.monty-intro__cta span:first-child {
+  font-size: 0.9rem;
+}
+
+.monty-intro__cta-arrow {
+  position: absolute;
+  left: calc(100% - 28px);
+  top: 50%;
+  transform: translateY(-38%) scaleX(1.45);
+  transform-origin: left center;
+  font-size: 1.85rem;
+  line-height: 1;
+  letter-spacing: 0;
+  color: inherit;
+}
+
+.monty-intro__cta--ghost {
+  background: transparent;
+  color: rgba(242, 223, 194, 0.8);
+  cursor: pointer;
+}
+
+.monty-intro__visual {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  height: 100%;
+  border-radius: 0 58px 0 0;
+  text-decoration: none;
+  background:
+    linear-gradient(180deg, rgba(16, 18, 20, 0.12), rgba(8, 10, 13, 0.18)),
+    linear-gradient(135deg, rgba(7, 8, 10, 0.96), rgba(18, 19, 22, 0.78));
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+}
+
+.monty-intro__visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.06), transparent 22%),
+    linear-gradient(322deg, rgba(214, 181, 138, 0.08), transparent 22%);
+  pointer-events: none;
+}
+
+.monty-intro__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 36%;
+  display: block;
+  opacity: 0.92;
+  filter: saturate(0.62) brightness(0.82) contrast(1.01);
+}
+
+.monty-intro__visual-caption {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 26px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.monty-intro__visual-caption p {
+  max-width: 32rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  color: rgba(202, 177, 142, 0.56);
+}
+
+.monty-intro__chapters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  padding: 18px 8px 0;
+}
+
+.monty-intro__chapter-tab {
+  font-size: 1.45rem;
+  letter-spacing: 0.16em;
+  color: rgba(235, 222, 204, 0.34);
+}
+
+.monty-intro__chapter-tab.is-active {
+  color: #cf7b3f;
+}
+
+.monty-intro__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 8px 4px 0;
+}
+
+.monty-intro__footer p {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: rgba(184, 118, 58, 0.86);
+}
+
+.monty-intro__footer p:nth-child(2) {
+  font-size: 1rem;
+}
+
+.monty-intro__footer p:last-child {
+  text-align: right;
+}
+
+@media (max-width: 1360px) {
+  .monty-intro__hero {
+    grid-template-columns: minmax(480px, 1fr) minmax(360px, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .monty-intro__shell {
+    height: auto;
+    min-height: 100vh;
+    padding: 20px 18px 14px;
+    display: block;
+    overflow: visible;
+  }
+
+  .monty-intro__header {
+    flex-direction: column;
+  }
+
+  .monty-intro__main {
+    display: block;
+    min-height: auto;
+  }
+
+  .monty-intro__feature {
+    height: auto;
+    display: block;
+  }
+
+  .monty-intro__hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    height: auto;
+  }
+
+  .monty-intro__visual {
+    min-height: 500px;
+    height: 500px;
+    order: 1;
+  }
+
+  .monty-intro__hero-copy {
+    order: 2;
+    padding: 10px 0 0;
+  }
+
+  .monty-intro__chapters {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .monty-intro__logo {
+    font-size: clamp(1.95rem, 10vw, 2.5rem);
+  }
+
+  .monty-intro__hero-copy {
+    padding: 6px 0 0;
+  }
+
+  .monty-intro__description {
+    font-size: 0.92rem;
+    line-height: 1.78;
+  }
+
+  .monty-intro__title {
+    max-width: none;
+    font-size: clamp(1.95rem, 8vw, 2.8rem);
+    line-height: 1.04;
+  }
+
+  .monty-intro__statement {
+    font-size: clamp(1rem, 4.5vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .monty-intro__visual {
+    min-height: 340px;
+    height: 340px;
+    border-radius: 0 28px 0 0;
+  }
+
+  .monty-intro__visual-caption {
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+  }
+
+  .monty-intro__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .monty-intro__footer p:last-child {
+    text-align: left;
+  }
+}

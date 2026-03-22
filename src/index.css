@@ -42,8 +42,10 @@
 }
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 'Noto Serif KR', serif;
+  background: #040612;
+  color: #d9f7ff;
 }
 
 .font-cinzel {

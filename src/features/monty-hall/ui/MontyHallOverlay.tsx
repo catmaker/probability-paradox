@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { useMontyHallStore } from '../model/store'
 import { GhostButton } from '@/shared/ui/GhostButton'
 import { Modal } from '@/shared/ui/Modal'
@@ -19,10 +20,10 @@ const pickMessages = [
 ]
 
 const revealTiers = [
-  ['꽝이 하나 열렸습니다. 바꾸시겠습니까?', '진행자가 문을 열었습니다. 꽝이군요.', '하나가 탈락했습니다. 선택을 바꿀 수 있습니다.'],
-  ['또 꽝을 열어줬군요. 친절하지 않나요?', '진행자는 항상 꽝을 엽니다. 눈치채셨나요?', '매번 꽝만 열리는 게 이상하지 않나요?'],
-  ['진행자는 정답을 알고 있습니다.', '꽝을 여는 건 우연이 아닙니다.', '왜 진행자는 절대 정답을 열지 않을까요?'],
-  ['패턴이 보이기 시작하나요?', '아직도 50:50이라 생각하시나요?', '숫자가 무언가를 말하고 있습니다.'],
+  ['진행자가 당신이 고르지 않은 문 중 꽝 하나를 제거했습니다.', '진행자가 일부러 꽝 문만 제거했습니다.', '문이 줄어든 게 아니라, 진행자가 꽝을 하나 걷어냈습니다.'],
+  ['또 꽝이 제거됐습니다. 이 선택은 랜덤이 아닙니다.', '진행자는 정답을 알고 꽝만 치웁니다.', '왜 진행자는 늘 꽝만 없앨 수 있을까요?'],
+  ['핵심은 문이 열린 게 아니라, 누가 제거했느냐입니다.', '진행자가 정답을 피해서 제거했다는 점이 중요합니다.', '그 제거는 정보입니다. 그냥 이벤트가 아닙니다.'],
+  ['이제도 반반처럼 느껴지나요?', '문 하나가 사라졌는데, 확률도 반씩 나뉜 걸까요?', '진행자의 선택이 왜 중요한지 보이기 시작하나요?'],
 ]
 
 const resultCommentTiers = [
@@ -41,23 +42,51 @@ const pickTier = (tiers: string[][], plays: number) => {
   return tiers[tier][plays % tiers[tier].length]
 }
 
+type IntuitionAnswer = 'fifty-fifty' | 'switch'
+
 export const MontyHallOverlay = () => {
+  const navigate = useNavigate()
   const [showIntro, setShowIntro] = useState(true)
-  const [dismissedAt, setDismissedAt] = useState<number | null>(null)
+  const [insightDismissed, setInsightDismissed] = useState(false)
+  const [intuitionAnswers, setIntuitionAnswers] = useState<IntuitionAnswer[]>([])
+  const [currentIntuition, setCurrentIntuition] = useState<{ round: number; answer: IntuitionAnswer } | null>(null)
 
   const stage = useMontyHallStore((s) => s.stage)
   const totalPlays = useMontyHallStore((s) => s.totalPlays)
   const switchWins = useMontyHallStore((s) => s.switchWins)
   const stayWins = useMontyHallStore((s) => s.stayWins)
-  const switchPlays = useMontyHallStore((s) => s.switchPlays)
-  const stayPlays = useMontyHallStore((s) => s.stayPlays)
   const lastWon = useMontyHallStore((s) => s.lastWon)
-  const { decideSwitchOrStay, reset, simulateOne } = useMontyHallStore((s) => s.actions)
+  const { decideSwitchOrStay, reset, restartAll, simulateOne } = useMontyHallStore((s) => s.actions)
 
-  // 바꾸기가 2승 이상 앞서거나, 10판 이상이면 무조건 트리거
-  const showCognitiveBias = stage === 'pick'
-    && (totalPlays >= 10 || (totalPlays >= 5 && switchWins - stayWins >= 2))
-    && (dismissedAt === null || totalPlays >= dismissedAt + 3)
+  const intuitionChecks = intuitionAnswers.length
+  const feltFiftyFifty = intuitionAnswers.filter((answer) => answer === 'fifty-fifty').length
+  const sensedSwitchEdge = intuitionChecks - feltFiftyFifty
+  const shouldAskIntuition = stage === 'reveal' && totalPlays === 1 && intuitionChecks === 0 && !insightDismissed
+  const showInsightModal = stage === 'pick' && totalPlays >= 3 && intuitionChecks >= 1 && !insightDismissed
+  const currentIntuitionAnswer = currentIntuition?.round === totalPlays ? currentIntuition.answer : null
+  const canDecide = !shouldAskIntuition || currentIntuitionAnswer !== null
+  const feltMostlyFiftyFifty = feltFiftyFifty >= Math.ceil(intuitionChecks / 2)
+  const showTheoryHint = intuitionChecks >= 3 || insightDismissed || totalPlays >= 5
+
+  const handleDecision = (doSwitch: boolean) => {
+    if (shouldAskIntuition) {
+      if (currentIntuitionAnswer === null) return
+      setIntuitionAnswers((answers) => [...answers, currentIntuitionAnswer])
+    }
+    decideSwitchOrStay(doSwitch)
+  }
+
+  const handleReset = () => {
+    setInsightDismissed(false)
+    setIntuitionAnswers([])
+    setCurrentIntuition(null)
+    reset()
+  }
+
+  const handleSimulateTruth = () => {
+    setInsightDismissed(true)
+    simulateOne()
+  }
 
   return (
     <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-between px-4" style={{ paddingTop: '2.5rem', paddingBottom: '2rem' }}>
@@ -89,10 +118,56 @@ export const MontyHallOverlay = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="flex gap-4 justify-center pointer-events-auto mb-8"
+            className="pointer-events-auto flex flex-col items-center gap-4 mb-8 w-full max-w-md"
           >
-            <GhostButton onClick={() => decideSwitchOrStay(true)}>⟳ 바꾸기</GhostButton>
-            <GhostButton variant="muted" onClick={() => decideSwitchOrStay(false)}>✦ 유지</GhostButton>
+            {shouldAskIntuition && (
+              <div className="w-full bg-black/60 backdrop-blur border border-cyan-900/50 rounded-xl text-center" style={{ padding: '1rem 1.1rem' }}>
+                <p className="text-cyan-500 text-[11px] tracking-[0.3em] uppercase font-cinzel">Intuition Check</p>
+                <p className="text-cyan-200 text-sm leading-relaxed" style={{ marginTop: '0.6rem' }}>
+                  진행자가 꽝 문 하나를 제거했습니다.<br />
+                  지금은 어떻게 느껴지나요?
+                </p>
+                <div className="grid grid-cols-2 gap-3" style={{ marginTop: '0.9rem' }}>
+                  <GhostButton
+                    type="button"
+                    variant={currentIntuitionAnswer === 'fifty-fifty' ? 'primary' : 'muted'}
+                    className="w-full"
+                    onClick={() => setCurrentIntuition({ round: totalPlays, answer: 'fifty-fifty' })}
+                  >
+                    반반 같아요
+                  </GhostButton>
+                  <GhostButton
+                    type="button"
+                    variant={currentIntuitionAnswer === 'switch' ? 'primary' : 'muted'}
+                    className="w-full"
+                    onClick={() => setCurrentIntuition({ round: totalPlays, answer: 'switch' })}
+                  >
+                    바꾸기가 유리해요
+                  </GhostButton>
+                </div>
+                <p className="text-cyan-700 text-[11px]" style={{ marginTop: '0.6rem' }}>
+                  이번 한 번만 묻습니다.
+                </p>
+              </div>
+            )}
+
+            <div className="flex gap-4 justify-center">
+              <GhostButton
+                onClick={() => handleDecision(true)}
+                disabled={!canDecide}
+                className="disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                ⟳ 바꾸기
+              </GhostButton>
+              <GhostButton
+                variant="muted"
+                onClick={() => handleDecision(false)}
+                disabled={!canDecide}
+                className="disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                ✦ 유지
+              </GhostButton>
+            </div>
           </motion.div>
         )}
         {stage === 'result' && (
@@ -125,32 +200,68 @@ export const MontyHallOverlay = () => {
                     <div className="h-1.5 bg-cyan-950 rounded-full overflow-hidden">
                       <div className="h-full bg-blue-700 rounded-full transition-all duration-500" style={{ width: `${(stayWins / totalPlays) * 100}%` }} />
                     </div>
+                    <p className="text-cyan-700 text-center text-[11px] leading-relaxed" style={{ marginTop: '0.5rem' }}>
+                      {showTheoryHint ? (
+                        <>
+                          짧은 표본은 흔들려도 이 문제의 이론값은<br />
+                          바꾸기 66.7% · 유지 33.3%입니다.
+                        </>
+                      ) : (
+                        <>
+                          아직은 결과가 흔들릴 수 있습니다.<br />
+                          몇 판만 더 해보면 패턴이 보이기 시작합니다.
+                        </>
+                      )}
+                    </p>
                   </>
                 )}
               </div>
             )}
-            <GhostButton onClick={reset}>다시 도전하기</GhostButton>
+            {totalPlays >= 3 && (
+              <GhostButton onClick={handleSimulateTruth} className="w-full max-w-xs">
+                1,000회 시뮬레이션 보기
+              </GhostButton>
+            )}
+            <div className="flex gap-3">
+              <GhostButton variant="muted" onClick={() => navigate('/')}>홈으로</GhostButton>
+              <GhostButton variant="muted" onClick={restartAll}>처음부터 다시</GhostButton>
+              <GhostButton onClick={handleReset}>한 판 더 하기</GhostButton>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* 인지 부조화 모달 — 바꾸기가 앞서기 시작하면 */}
-      <Modal open={showCognitiveBias}>
+      {/* 직관 설명 모달 */}
+      <Modal open={showInsightModal}>
         <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <p className="text-cyan-500 text-xs font-cinzel tracking-[0.3em] uppercase">— 잠깐 —</p>
           <p className="text-cyan-200 text-xl font-cinzel leading-relaxed">
-            {totalPlays}번을 해봤습니다.<br />
-            바꾸기 {switchWins}승, 유지 {stayWins}승.<br />
-            우연이라고 생각하시나요?
+            {feltMostlyFiftyFifty ? (
+              <>
+                {intuitionChecks}번 중 {feltFiftyFifty}번,<br />
+                반반처럼 느끼셨습니다.
+              </>
+            ) : (
+              <>
+                이미 눈치채고 계셨네요.<br />
+                {sensedSwitchEdge}번은 바꾸기가 더 유리하다고 보셨습니다.
+              </>
+            )}
           </p>
           <p className="text-cyan-600 text-sm leading-relaxed">
-            100번을 돌려보면 답이 보입니다.
+            {feltMostlyFiftyFifty
+              ? '하지만 이 문제는 공개 뒤에도 50:50이 아닙니다. 처음 고른 문은 1/3, 남은 한 문은 2/3를 가집니다.'
+              : '맞습니다. 진행자가 꽝을 하나 치워도 처음 선택의 1/3은 그대로 남고, 나머지 2/3가 한 문으로 몰립니다.'}
+          </p>
+          <p className="text-cyan-700 text-xs leading-relaxed">
+            운은 잠깐 흔들려도 구조는 흔들리지 않습니다.<br />
+            1,000번을 돌리면 그 윤곽이 훨씬 또렷해집니다.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <GhostButton variant="muted" className="flex-1" onClick={() => setDismissedAt(totalPlays)}>
-              더 해볼게요
+            <GhostButton variant="muted" className="flex-1" onClick={() => setInsightDismissed(true)}>
+              한 판 더 볼게요
             </GhostButton>
-            <GhostButton className="flex-1" onClick={simulateOne}>
+            <GhostButton className="flex-1" onClick={handleSimulateTruth}>
               ✦ 진실 보기
             </GhostButton>
           </div>
