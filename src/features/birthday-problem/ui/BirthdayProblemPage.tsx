@@ -278,8 +278,8 @@ const BirthdayIntroModal = ({ open, onStart }: { open: boolean; onStart: () => v
     <div className="birthday-problem__modal">
       <p className="birthday-problem__modal-eyebrow font-cinzel">— The Birthday Problem —</p>
       <p className="birthday-problem__modal-title">
-        몇 명쯤 모이면,<br />
-        같은 생일은 시작될까요?
+        몇 명쯤 모여야,<br />
+        같은 생일이 나타날까요?
       </p>
       <div className="birthday-problem__modal-list">
         <p>사람을 한 명씩 방 안에 불러옵니다.</p>
@@ -411,7 +411,7 @@ const BirthdaySimulationOverlay = ({
                 <span> / {TOTAL_SIM_RUNS}</span>
               </p>
               <p className="birthday-problem__simulation-copy">
-                {sampleSize}명을 계속 다시 불러들였을 때, 얼마나 자주 생일이 겹쳤는지 확인합니다.
+                핵심 장면인 {sampleSize}명을 계속 다시 불러들였을 때, 얼마나 자주 생일이 겹쳤는지 확인합니다.
               </p>
               <div className="birthday-problem__simulation-track">
                 <motion.div
@@ -654,7 +654,6 @@ export const BirthdayProblemPage = () => {
 
             <div className="birthday-problem__prompt birthday-problem__prompt--floating">
               <p className="birthday-problem__prompt-eyebrow font-cinzel">Birthday Problem</p>
-              <h1 className="birthday-problem__prompt-name">생일 문제</h1>
               <p className="birthday-problem__prompt-title">{stageMessage}</p>
             </div>
 
@@ -722,12 +721,12 @@ export const BirthdayProblemPage = () => {
                 </div>
                 <p className="birthday-problem__sidebar-copy birthday-problem__sidebar-copy--soft">{controlHint}</p>
                 {simTotal > 0 && (
-                  <div className="birthday-problem__live-rate">
-                    <span className="font-cinzel">LATEST RUN</span>
-                    <strong>{collisionRate.toFixed(1)}%</strong>
-                    <p>{simTotal}번 중 {simHits}번 겹침</p>
-                  </div>
-                )}
+                <div className="birthday-problem__live-rate">
+                  <span className="font-cinzel">LATEST RUN · 23 GUESTS</span>
+                  <strong>{collisionRate.toFixed(1)}%</strong>
+                  <p>{simTotal}번 중 {simHits}번 겹침</p>
+                </div>
+              )}
               </div>
             </section>
           </section>

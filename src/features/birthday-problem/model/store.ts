@@ -101,13 +101,13 @@ export const useBirthdayProblemStore = create<BirthdayProblemState>((set, get) =
       stage: 'gather',
       thresholdSeen: true,
     }),
-    startSimulation: () => set((state) => ({
+    startSimulation: () => set({
       stage: 'simulating',
       thresholdSeen: true,
-      simulationSampleSize: Math.max(state.participants.length, BIRTHDAY_THRESHOLD),
+      simulationSampleSize: BIRTHDAY_THRESHOLD,
       simTotal: 0,
       simHits: 0,
-    })),
+    }),
     simulateBatch: (count) => {
       const sampleSize = Math.max(get().simulationSampleSize, BIRTHDAY_THRESHOLD)
       let hits = 0
