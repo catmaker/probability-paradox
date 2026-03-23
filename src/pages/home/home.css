@@ -279,6 +279,14 @@
   color: #d78647;
 }
 
+.monty-intro__cta--disabled {
+  background: rgba(122, 97, 70, 0.04);
+  border-color: rgba(128, 103, 78, 0.42);
+  color: rgba(187, 157, 126, 0.54);
+  cursor: default;
+  pointer-events: none;
+}
+
 .monty-intro__cta span:first-child {
   font-size: 0.9rem;
 }
@@ -334,6 +342,38 @@
   filter: saturate(0.62) brightness(0.82) contrast(1.01);
 }
 
+.monty-intro__visual--birthday img {
+  object-position: center 42%;
+  filter: saturate(0.72) brightness(0.8) contrast(1.03);
+}
+
+.monty-intro__visual--placeholder {
+  background:
+    radial-gradient(circle at 64% 26%, rgba(208, 140, 79, 0.16), transparent 18%),
+    linear-gradient(135deg, rgba(11, 12, 14, 0.98), rgba(23, 18, 17, 0.92));
+}
+
+.monty-intro__visual-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(240, 226, 208, 0.8);
+}
+
+.monty-intro__visual-placeholder span {
+  font-size: clamp(3rem, 7vw, 6rem);
+  letter-spacing: 0.12em;
+}
+
+.monty-intro__visual-placeholder p {
+  font-size: 0.95rem;
+  letter-spacing: 0.38em;
+}
+
 .monty-intro__visual-caption {
   position: absolute;
   left: 40px;
@@ -362,9 +402,19 @@
 }
 
 .monty-intro__chapter-tab {
+  border: 0;
+  background: transparent;
+  padding: 0;
   font-size: 1.45rem;
   letter-spacing: 0.16em;
   color: rgba(235, 222, 204, 0.34);
+  cursor: pointer;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.monty-intro__chapter-tab:hover {
+  color: rgba(235, 222, 204, 0.62);
+  transform: translateY(-1px);
 }
 
 .monty-intro__chapter-tab.is-active {

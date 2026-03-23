@@ -88,6 +88,11 @@ export const MontyHallOverlay = () => {
     simulateOne()
   }
 
+  const handleGoHome = () => {
+    restartAll()
+    navigate('/')
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-between px-4" style={{ paddingTop: '2.5rem', paddingBottom: '2rem' }}>
 
@@ -223,7 +228,7 @@ export const MontyHallOverlay = () => {
               </GhostButton>
             )}
             <div className="flex gap-3">
-              <GhostButton variant="muted" onClick={() => navigate('/')}>홈으로</GhostButton>
+              <GhostButton variant="muted" onClick={handleGoHome}>홈으로</GhostButton>
               <GhostButton variant="muted" onClick={restartAll}>처음부터 다시</GhostButton>
               <GhostButton onClick={handleReset}>한 판 더 하기</GhostButton>
             </div>

@@ -41,11 +41,22 @@
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
 body {
   overflow-x: hidden;
   font-family: 'Noto Serif KR', serif;
   background: #040612;
   color: #d9f7ff;
+}
+
+#root {
+  position: relative;
 }
 
 .font-cinzel {

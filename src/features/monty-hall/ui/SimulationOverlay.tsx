@@ -255,6 +255,11 @@ export const SimulationOverlay = () => {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const countRef = useRef(0)
 
+  const handleGoHome = () => {
+    restartAll()
+    navigate('/')
+  }
+
   // 마운트 시 자동 시작 (카운트 초기화 후)
   useEffect(() => {
     useMontyHallStore.setState({ simTotal: 0, simSwitchWins: 0, simStayWins: 0 })
@@ -348,7 +353,7 @@ export const SimulationOverlay = () => {
           <div style={{ display: 'flex', gap: '0.75rem' }}>
             <GhostButton
               variant="muted"
-              onClick={() => navigate('/')}
+              onClick={handleGoHome}
               className="flex-1 text-[12px] tracking-[0.16em] whitespace-nowrap"
               style={{ padding: '0.5rem 0.9rem' }}
             >

@@ -4,9 +4,10 @@ import type { ReactNode } from 'react'
 interface ModalProps {
   open: boolean
   children: ReactNode
+  panelClassName?: string
 }
 
-export const Modal = ({ open, children }: ModalProps) => (
+export const Modal = ({ open, children, panelClassName = '' }: ModalProps) => (
   <AnimatePresence>
     {open && (
       <motion.div
@@ -16,7 +17,10 @@ export const Modal = ({ open, children }: ModalProps) => (
         transition={{ duration: 0.2 }}
         className="absolute inset-0 flex items-center justify-center pointer-events-auto bg-black/50 backdrop-blur-sm z-10"
       >
-        <div className="bg-black/80 backdrop-blur-md border border-cyan-800/60 rounded-2xl max-w-sm w-full mx-4" style={{ padding: '2.5rem 2rem' }}>
+        <div
+          className={`bg-black/80 backdrop-blur-md border border-cyan-800/60 rounded-2xl max-w-sm w-full mx-4 ${panelClassName}`}
+          style={{ padding: '2.5rem 2rem' }}
+        >
           {children}
         </div>
       </motion.div>
