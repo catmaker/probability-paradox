@@ -935,6 +935,11 @@
   font-weight: 600;
 }
 
+.birthday-problem__nowrap {
+  white-space: nowrap;
+  display: inline-block;
+}
+
 .birthday-problem__simulation-nav {
   display: grid;
   grid-template-columns: 7.5rem minmax(0, 1fr) 7.5rem;

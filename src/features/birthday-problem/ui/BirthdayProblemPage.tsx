@@ -35,7 +35,7 @@ const NOTE_SLIDES = [
         <h3 className="birthday-problem__simulation-title">자기중심적인 질문은 진실을 안개 너머로 숨깁니다</h3>
         <div className="birthday-problem__simulation-quote">
           <p>
-            “이 방에 <span>나와 생일이 같은 사람</span>이 있을까?”
+            “이 방에 <span className="birthday-problem__nowrap">나와 생일이 같은 사람</span>이 있을까?”
           </p>
         </div>
         <div className="birthday-problem__simulation-body">
@@ -88,7 +88,8 @@ const NOTE_SLIDES = [
           <p>그리고 23명이 모이는 순간, 작은 방 안에는 무려 253가닥의 촘촘한 그물망이 완성됩니다.</p>
         </div>
         <p className="birthday-problem__simulation-caption">
-          365일이라는 캔버스 위에 253번이나 무작위로 점을 찍는데, 단 한 번도 같은 자리에 떨어지지 않는 것이 오히려 더 기이한 일 아닐까요?
+          <span className="birthday-problem__nowrap">365일이라는 캔버스 위에</span> 253번이나 무작위로 점을 찍는데,
+          <span className="birthday-problem__nowrap">단 한 번도 같은 자리에</span> 떨어지지 않는 것이 오히려 더 기이한 일 아닐까요?
         </p>
       </>
     ),
@@ -98,29 +99,38 @@ const NOTE_SLIDES = [
     render: () => (
       <>
         <p className="birthday-problem__modal-eyebrow font-cinzel">3 — 심연의 그림자</p>
-        <h3 className="birthday-problem__simulation-title">이 직관의 붕괴는 현대 암호학에서 ‘생일 공격’이라는 이름으로 되살아납니다</h3>
+        <h3 className="birthday-problem__simulation-title">
+          이 직관의 붕괴는 현대 암호학에서 <span className="birthday-problem__nowrap">‘생일 공격’</span>이라는 이름으로 되살아납니다
+        </h3>
         <div className="birthday-problem__simulation-quote">
           <p>
-            목표는 <span>하나의 과녁</span>을 맞히는 것이 아니라,
+            목표는 <span className="birthday-problem__nowrap">하나의 과녁</span>을 맞히는 것이 아니라,
             <br />
-            <span>아무 두 결과나 서로 부딪히게 만드는 것</span>입니다.
+            <span className="birthday-problem__nowrap">아무 두 결과나 서로 부딪히게 만드는 것</span>입니다.
           </p>
         </div>
         <div className="birthday-problem__simulation-compare">
           <div className="birthday-problem__simulation-compare-card">
             <span className="font-cinzel">거의 불가능한 쪽</span>
-            <strong>견고한 암호 하나를 정확히 꿰뚫기</strong>
+            <strong>
+              <span className="birthday-problem__nowrap">견고한 암호 하나를</span> 정확히 꿰뚫기
+            </strong>
             <p>특정한 하나를 직접 노리는 일은 너무 멀고 단단해 보입니다.</p>
           </div>
           <div className="birthday-problem__simulation-compare-card is-highlight">
             <span className="font-cinzel">실제로 더 쉬운 쪽</span>
-            <strong>아무 두 암호가 우연히 충돌하게 만들기</strong>
+            <strong>
+              <span className="birthday-problem__nowrap">아무 두 암호가</span> 우연히 충돌하게 만들기
+            </strong>
             <p>어둠 속의 추적자들은 특정 하나를 맞히지 않고, 아무 둘이나 부딪히게 만듭니다.</p>
           </div>
         </div>
         <div className="birthday-problem__simulation-body">
           <p>그래서 이 문제는 단순한 지적 유희로 끝나지 않습니다. 현대 암호학의 가장 깊은 곳에서, 바로 이 빗나간 직관이 가장 날카로운 무기가 됩니다.</p>
-          <p>“하나를 맞히는 것”보다 “아무거나 두 개가 부딪히게 만드는 것”이 훨씬 쉽다는 파괴적인 진실이 디지털 세계에서도 반복됩니다.</p>
+          <p>
+            “하나를 맞히는 것”보다
+            <span className="birthday-problem__nowrap"> “아무거나 두 개가 부딪히게 만드는 것”</span>이 훨씬 쉽다는 파괴적인 진실이 디지털 세계에서도 반복됩니다.
+          </p>
         </div>
       </>
     ),
@@ -135,7 +145,7 @@ const NOTE_SLIDES = [
           <p>
             “365일이나 있는데 왜 이렇게 빨리 겹치지?”
             <br />
-            <span>이 서늘한 질문이 곧 이 퍼즐의 정체입니다.</span>
+            <span className="birthday-problem__nowrap">이 서늘한 질문이 곧 이 퍼즐의 정체입니다.</span>
           </p>
         </div>
         <div className="birthday-problem__simulation-body">
